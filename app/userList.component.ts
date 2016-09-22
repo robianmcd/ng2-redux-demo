@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {User} from "./models/user";
+import {AppState} from "./main";
 
 @Component({
     selector: 'user-list',
@@ -29,8 +30,8 @@ import {User} from "./models/user";
 export class UserListComponent {
     users: Observable<User[]>;
 
-    constructor(public store: Store) {
-        this.users = store.select('user');
+    constructor(public store: Store<AppState>) {
+        this.users = store.select(s => s.users);
     }
 
     addUser() {

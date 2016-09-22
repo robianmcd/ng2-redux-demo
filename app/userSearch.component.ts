@@ -4,6 +4,7 @@ import {Observable} from "rxjs/Observable"
 import {User} from "./models/user";
 import {Store} from "@ngrx/store";
 import 'rxjs/rx';
+import {AppState} from "./main";
 
 @Component({
     selector: 'user-search',
@@ -37,11 +38,11 @@ export class UserSearchComponent {
     users: Observable<User[]>;
     firstNameSearch$ = new BehaviorSubject('');
 
-    constructor(public store: Store) {
+    constructor(public store: Store<AppState>) {
         //http://rxmarbles.com/#combineLatest
         this.users = Observable.combineLatest(
             this.firstNameSearch$,
-            store.select('user'),
+            store.select(s => s.users),
             (firstNameSearch, users) => {
                 return users.filter(user => user.firstName.includes(firstNameSearch));
             }

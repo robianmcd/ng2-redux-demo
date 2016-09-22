@@ -7,12 +7,13 @@ import {userReducer} from "./reducers/userReducer";
 import {ReduxAppComponent} from "./reduxApp.component";
 import {UserListComponent} from "./userList.component";
 import {UserSearchComponent} from "./userSearch.component";
+import {User} from "./models/user";
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
-        StoreModule.provideStore({ user: userReducer })
+        StoreModule.provideStore({ users: userReducer })
     ],
     declarations: [ReduxAppComponent, UserListComponent, UserSearchComponent],
     providers: [],
@@ -20,6 +21,9 @@ import {UserSearchComponent} from "./userSearch.component";
 })
 class AppModule { }
 
+export interface AppState {
+    users: User[]
+}
 
 const platform = platformBrowserDynamic();
 platform.bootstrapModule(AppModule);
