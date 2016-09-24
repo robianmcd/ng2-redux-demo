@@ -30,9 +30,7 @@ import {Input} from "@angular/core";
 })
 export class UserSearchResultsComponent {
     @Input() users: User[];
-    @Input() set firstNameSearch(value: string) {
-        this.filteredUsers = this.filterUsers(this.users, value)
-    }
+    @Input() firstNameSearch: string;
 
     filteredUsers: User[];
 
@@ -40,11 +38,10 @@ export class UserSearchResultsComponent {
 
     }
 
-    // @Input() firstNameSearch: string;
-    // ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    //     console.log(changes);
-    //     this.filteredUsers = this.filterUsers(this.users, this.firstNameSearch);
-    // }
+    ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+        console.log(changes);
+        this.filteredUsers = this.filterUsers(this.users, this.firstNameSearch);
+    }
 
     filterUsers(users: User[], firstNameSearch: string) {
         return users.filter(user => user.firstName.includes(firstNameSearch));

@@ -1,5 +1,6 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {User} from "./models/user";
+import {CreateUserModal} from "./createUserModal.component";
 
 declare let faker;
 
@@ -8,10 +9,12 @@ declare let faker;
     template: `
 <div class="container">
     <h2>User App</h2>
+    <button (click)="createUser()" class="btn btn-primary">Create User</button>
     <div>
         First Name: <input [(ngModel)]="firstNameSearch"> 
     </div>
     <user-search-results [users]="users" [firstNameSearch]="firstNameSearch"></user-search-results>
+    <create-user-modal></create-user-modal>
 </div>
 `
 })
@@ -19,8 +22,11 @@ export class UserAppComponent {
     users: User[] = [];
     firstNameSearch: string = '';
 
+    @ViewChild(CreateUserModal)
+    createUserModal: CreateUserModal;
+
     constructor() {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
             this.users.push(
                 new User({
                     id: faker.random.uuid(),
@@ -32,5 +38,13 @@ export class UserAppComponent {
                 })
             );
         }
+    }
+
+    createUser() {
+        this.createUserModal.open()
+            .then((user) => {
+                this.users = [user, ...this.users];
+            })
+            .catch(() => {});
     }
 }
