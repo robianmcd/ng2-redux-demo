@@ -12,6 +12,7 @@ import {CreateUserModal} from "./createUserModal.component";
         First Name: <input [(ngModel)]="firstNameSearch"> 
     </div>
     <user-search-results [users]="users" [firstNameSearch]="firstNameSearch"></user-search-results>
+    
     <create-user-modal></create-user-modal>
 </div>
 `
@@ -20,9 +21,6 @@ export class UserAppComponent {
     users: User[] = [];
     firstNameSearch: string = '';
 
-    @ViewChild(CreateUserModal)
-    createUserModal: CreateUserModal;
-
     constructor() {
         for (let i = 0; i < 5; i++) {
             this.users.push(User.fromMockData());
@@ -30,10 +28,6 @@ export class UserAppComponent {
     }
 
     createUser() {
-        this.createUserModal.open()
-            .then((user) => {
-                this.users = [user, ...this.users];
-            })
-            .catch(() => {});
+
     }
 }
