@@ -9,7 +9,7 @@ import {User} from "./models/user";
     <div>
         First Name: <input [(ngModel)]="firstNameSearch"> 
     </div>
-    <user-search-results [users]="users" [firstNameSearch]="firstNameSearch"></user-search-results>
+    <user-search-results></user-search-results>
 </div>
 `
 })
