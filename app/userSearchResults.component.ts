@@ -1,12 +1,15 @@
 import {Component, OnChanges, SimpleChange} from "@angular/core";
 import {User} from "./models/user";
-import {Input} from "@angular/core";
+import {Input, Output, EventEmitter} from "@angular/core";
 
 @Component({
     selector: 'user-search-results',
     template: `
 <div class="panel panel-info" *ngFor="let user of filteredUsers">
-  <div class="panel-heading"><strong>{{user.firstName}} {{user.lastName}}</strong></div>
+  <div class="panel-heading">
+    <strong>{{user.firstName}} {{user.lastName}}</strong>
+    <div class="pull-right" (click)="removeUser.emit(user)">X</div>
+  </div>
   <div class="panel-body">
     <div class="col-sm-3">
         <img [src]="user.avatar" style="display: block; margin-left: auto; margin-right: auto;">
@@ -28,9 +31,11 @@ import {Input} from "@angular/core";
 </div>
 `
 })
-export class UserSearchResultsComponent {
+export class UserSearchResultsComponent implements OnChanges {
     @Input() users: User[];
     @Input() firstNameSearch: string;
+
+    @Output() removeUser = new EventEmitter();
 
     filteredUsers: User[];
 
@@ -39,7 +44,6 @@ export class UserSearchResultsComponent {
     }
 
     ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-        console.log(changes);
         this.filteredUsers = this.filterUsers(this.users, this.firstNameSearch);
     }
 

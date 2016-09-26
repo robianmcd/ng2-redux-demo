@@ -13,7 +13,7 @@ declare let faker;
     <div>
         First Name: <input [(ngModel)]="firstNameSearch"> 
     </div>
-    <user-search-results [users]="users" [firstNameSearch]="firstNameSearch"></user-search-results>
+    <user-search-results [users]="users" [firstNameSearch]="firstNameSearch" (removeUser)="removeUser($event)"></user-search-results>
     <create-user-modal></create-user-modal>
 </div>
 `
@@ -46,5 +46,9 @@ export class UserAppComponent {
                 this.users = [user, ...this.users];
             })
             .catch(() => {});
+    }
+
+    removeUser(removedUser) {
+        this.users = this.users.filter(user => user !== removedUser);
     }
 }
