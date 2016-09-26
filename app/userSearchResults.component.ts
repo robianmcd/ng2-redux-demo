@@ -28,7 +28,7 @@ import {Input} from "@angular/core";
 </div>
 `
 })
-export class UserSearchResultsComponent {
+export class UserSearchResultsComponent implements OnChanges {
     @Input() users: User[];
     @Input() firstNameSearch: string;
 
@@ -39,7 +39,6 @@ export class UserSearchResultsComponent {
     }
 
     ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-        console.log(changes);
         this.filteredUsers = this.filterUsers(this.users, this.firstNameSearch);
     }
 

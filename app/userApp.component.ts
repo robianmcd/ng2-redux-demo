@@ -2,8 +2,6 @@ import {Component, ViewChild} from "@angular/core";
 import {User} from "./models/user";
 import {CreateUserModal} from "./createUserModal.component";
 
-declare let faker;
-
 @Component({
     selector: 'user-app',
     template: `
@@ -27,16 +25,7 @@ export class UserAppComponent {
 
     constructor() {
         for (let i = 0; i < 5; i++) {
-            this.users.push(
-                new User({
-                    id: faker.random.uuid(),
-                    firstName: faker.name.firstName(),
-                    lastName: faker.name.lastName(),
-                    address: faker.address.streetAddress(),
-                    email: faker.internet.email(),
-                    avatar: faker.image.avatar()
-                })
-            );
+            this.users.push(User.fromMockData());
         }
     }
 

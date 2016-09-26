@@ -1,3 +1,5 @@
+declare let faker;
+
 export class User {
     public id: string;
     public firstName : string;
@@ -14,5 +16,16 @@ export class User {
         this.email = email;
         this.address = address;
         this.avatar = avatar;
+    }
+
+    static fromMockData(): User {
+        return new User({
+            id: faker.random.uuid(),
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            address: faker.address.streetAddress(),
+            email: faker.internet.email(),
+            avatar: faker.image.avatar()
+        })
     }
 }
