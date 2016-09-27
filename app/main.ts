@@ -4,13 +4,14 @@ import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {FormsModule} from "@angular/forms";
 import {UserSearchResultsComponent} from "./userSearchResults.component";
 import {UserAppComponent} from "./userApp.component";
+ import {CreateUserModal} from "./createUserModal.component";
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule
     ],
-    declarations: [UserAppComponent, UserSearchResultsComponent],
+    declarations: [UserAppComponent, UserSearchResultsComponent, CreateUserModal],
     providers: [],
     bootstrap: [UserAppComponent]
 })
