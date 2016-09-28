@@ -13,7 +13,7 @@ import {UserService} from "./user.service";
 <div>
     <h3>User Search</h3>
     <div>
-        First Name: <input #firstName>
+        First Name: <input #firstName (keyup)="firstNameSearch.next(firstName.value)">
     </div>
     <div class="panel panel-info" *ngFor="let user of users | async">
         <div class="panel-heading">
@@ -43,9 +43,16 @@ import {UserService} from "./user.service";
 })
 export class UserSearchComponent {
     users: Observable<User[]>;
+    firstNameSearch = new BehaviorSubject('');
 
     constructor(private userService: UserService) {
-        this.users = userService.getUsers();
+        this.users = Observable.combineLatest(
+            userService.getUsers(),
+            this.firstNameSearch,
+            (users, search) => {
+                return users.filter(user => user.firstName.includes(search));
+            }
+        );
     }
 
     removeUser(user: User) {
