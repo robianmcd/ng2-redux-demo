@@ -8,6 +8,7 @@ import {ReduxAppComponent} from "./reduxApp.component";
 import {UserListComponent} from "./userList.component";
 import {UserSearchComponent} from "./userSearch.component";
 import {User} from "./models/user";
+import {UserService} from "./user.service";
 
 @NgModule({
     imports: [
@@ -16,7 +17,7 @@ import {User} from "./models/user";
         StoreModule.provideStore({ users: userReducer })
     ],
     declarations: [ReduxAppComponent, UserListComponent, UserSearchComponent],
-    providers: [],
+    providers: [UserService],
     bootstrap: [ReduxAppComponent]
 })
 class AppModule { }

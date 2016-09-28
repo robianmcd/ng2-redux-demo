@@ -1,10 +1,11 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild, ElementRef} from "@angular/core";
 import {BehaviorSubject} from "rxjs/BehaviorSubject"
 import {Observable} from "rxjs/Observable"
 import {User} from "./models/user";
 import {Store} from "@ngrx/store";
 import 'rxjs/rx';
 import {AppState} from "./main";
+import {UserService} from "./user.service";
 
 @Component({
     selector: 'user-search',
@@ -12,9 +13,9 @@ import {AppState} from "./main";
 <div>
     <h3>User Search</h3>
     <div>
-        First Name: <input (keyup)="firstNameSearch$.next($event.target.value)">
+        First Name: <input #firstName (keyup)="filterUsers(firstName.value)">
     </div>
-    <div class="panel panel-info" *ngFor="let user of (users | async)">
+    <div class="panel panel-info" *ngFor="let user of filteredUsers">
         <div class="panel-heading">
             <strong>{{user.firstName}} {{user.lastName}}</strong>
             <div class="pull-right" (click)="removeUser(user)">X</div>
@@ -41,21 +42,22 @@ import {AppState} from "./main";
 `
 })
 export class UserSearchComponent {
-    users: Observable<User[]>;
-    firstNameSearch$ = new BehaviorSubject('');
+    filteredUsers: User[];
 
-    constructor(public store: Store<AppState>) {
-        //http://rxmarbles.com/#combineLatest
-        this.users = Observable.combineLatest(
-            this.firstNameSearch$,
-            store.select(s => s.users),
-            (firstNameSearch, users) => {
-                return users.filter(user => user.firstName.includes(firstNameSearch));
-            }
-        );
+    @ViewChild('firstName') firstName: ElementRef;
+
+    constructor(public userService: UserService) {
+
     }
 
     removeUser(user: User) {
-        this.store.dispatch({type: 'DELETE_USER', payload: {id: user.id}})
+        this.userService.users = this.userService.users.filter(u => u !== user);
+
+        console.log(this.firstName);
+        this.filterUsers(this.firstName.nativeElement.value);
+    }
+
+    filterUsers(search) {
+        this.filteredUsers = this.userService.users.filter(user => user.firstName.includes(search));
     }
 }

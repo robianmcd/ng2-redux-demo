@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {Store} from "@ngrx/store";
 import {User} from "./models/user";
 import {AppState} from "./main";
+import {UserService} from "./user.service";
 
 @Component({
     selector: 'user-list',
@@ -17,7 +18,7 @@ import {AppState} from "./main";
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of (users | async)">
+        <tr *ngFor="let user of users">
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.email}}</td>
@@ -28,13 +29,13 @@ import {AppState} from "./main";
 `
 })
 export class UserListComponent {
-    users: Observable<User[]>;
+    users: User[];
 
-    constructor(public store: Store<AppState>) {
-        this.users = store.select(s => s.users);
+    constructor(userService: UserService) {
+        this.users = userService.users;
     }
 
     addUser() {
-        this.store.dispatch({type: 'CREATE_USER'});
+        this.users.push(User.fromMockData());
     }
 }
