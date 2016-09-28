@@ -18,7 +18,7 @@ import {UserService} from "./user.service";
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of users">
+        <tr *ngFor="let user of users | async">
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.email}}</td>
@@ -29,13 +29,13 @@ import {UserService} from "./user.service";
 `
 })
 export class UserListComponent {
-    users: User[];
+    users: Observable<User[]>;
 
-    constructor(userService: UserService) {
-        this.users = userService.users;
+    constructor(private userService: UserService) {
+        this.users = userService.getUsers();
     }
 
     addUser() {
-        this.users.push(User.fromMockData());
+        this.userService.addUser(User.fromMockData());
     }
 }

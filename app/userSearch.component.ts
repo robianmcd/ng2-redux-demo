@@ -13,9 +13,9 @@ import {UserService} from "./user.service";
 <div>
     <h3>User Search</h3>
     <div>
-        First Name: <input #firstName (keyup)="filterUsers(firstName.value)">
+        First Name: <input #firstName>
     </div>
-    <div class="panel panel-info" *ngFor="let user of filteredUsers">
+    <div class="panel panel-info" *ngFor="let user of users | async">
         <div class="panel-heading">
             <strong>{{user.firstName}} {{user.lastName}}</strong>
             <div class="pull-right" (click)="removeUser(user)">X</div>
@@ -42,22 +42,13 @@ import {UserService} from "./user.service";
 `
 })
 export class UserSearchComponent {
-    filteredUsers: User[];
+    users: Observable<User[]>;
 
-    @ViewChild('firstName') firstName: ElementRef;
-
-    constructor(public userService: UserService) {
-
+    constructor(private userService: UserService) {
+        this.users = userService.getUsers();
     }
 
     removeUser(user: User) {
-        this.userService.users = this.userService.users.filter(u => u !== user);
-
-        console.log(this.firstName);
-        this.filterUsers(this.firstName.nativeElement.value);
-    }
-
-    filterUsers(search) {
-        this.filteredUsers = this.userService.users.filter(user => user.firstName.includes(search));
+        this.userService.removeUser(user);
     }
 }
