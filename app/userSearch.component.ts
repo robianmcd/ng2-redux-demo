@@ -12,24 +12,30 @@ import {AppState} from "./main";
 <div>
     <h3>User Search</h3>
     <div>
-    First Name: <input (keyup)="firstNameSearch$.next($event.target.value)"> 
+        First Name: <input (keyup)="firstNameSearch$.next($event.target.value)">
     </div>
     <div class="panel panel-info" *ngFor="let user of (users | async)">
-      <div class="panel-heading"><strong>{{user.firstName}} {{user.lastName}}</strong></div>
-      <div class="panel-body">
-        <img [src]="user.avatar" style="display: block; margin-left: auto; margin-right: auto;">
-        <table class="table">
-            <tr>
-                <td><strong>ID</strong></td> <td>{{user.id}}</td>
-            </tr>
-            <tr>
-                <td><strong>Address</strong></td> <td>{{user.address}}</td>
-            </tr>
-            <tr>
-                <td><strong>Email</strong></td> <td>{{user.email}}</td>
-            </tr>
-        </table>
-      </div>
+        <div class="panel-heading">
+            <strong>{{user.firstName}} {{user.lastName}}</strong>
+            <div class="pull-right" (click)="removeUser(user)">X</div>
+        </div>
+        <div class="panel-body">
+            <img [src]="user.avatar" style="display: block; margin-left: auto; margin-right: auto;">
+            <table class="table">
+                <tr>
+                    <td><strong>ID</strong></td>
+                    <td>{{user.id}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Address</strong></td>
+                    <td>{{user.address}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Email</strong></td>
+                    <td>{{user.email}}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 `
@@ -47,5 +53,9 @@ export class UserSearchComponent {
                 return users.filter(user => user.firstName.includes(firstNameSearch));
             }
         );
+    }
+
+    removeUser(user: User) {
+        this.store.dispatch({type: 'DELETE_USER', payload: {id: user.id}})
     }
 }
